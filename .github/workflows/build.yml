@@ -1,0 +1,61 @@
+name: Update version
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Cypress version' # ${{ github.event.inputs.version }}
+        required: true
+      
+env:
+  IMAGE_NAME: ninobysa/cypress
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and cache ${{ github.event.inputs.version }}
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:test
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
+          build-args: |
+            CYPRESS_VERSION=${{ github.event.inputs.version }}
+      -
+        name: Test ${{ github.event.inputs.version }}
+        run: |
+          docker run --rm ${{ env.IMAGE_NAME }}:test version 
+          docker run --rm --name static -v $(pwd)/test:/usr/share/nginx/html:ro -d nginx:stable-alpine
+          docker run --rm -v $(pwd)/test:/test -w /test --network=container:static ${{ env.IMAGE_NAME }}:test
+      -
+        name: Push ${{ github.event.inputs.version }}
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}
+            ${{ env.IMAGE_NAME }}:latest
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
+          build-args: |
+            CYPRESS_VERSION=${{ github.event.inputs.version }}
