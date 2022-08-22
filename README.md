@@ -9,7 +9,7 @@ docker pull ninobysa/cypress:latest
 ```
 
 ## Usage
-Example with a static website is a `test` directory:
+Example with a static website in a `test` directory:
 ```bash
 docker run --rm --name static -v $(pwd)/test:/usr/share/nginx/html:ro -d nginx:stable-alpine
 docker run --rm -v $(pwd)/test:/test -w /test --network=container:static ninobysa/cypress:latest
@@ -23,7 +23,7 @@ To keep this image as light as possible the fonts to support emoji and Chinese h
 
 If you need emoji:
 ``` Dockerfile
-FROM ninobysa:cypress:10.6.0
+FROM ninobysa/cypress:10.6.0
 
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
@@ -35,7 +35,7 @@ RUN apt-get update && \
 
 If you need chinese:
 ``` Dockerfile
-FROM ninobysa:cypress:10.6.0
+FROM ninobysa/cypress:10.6.0
 
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
