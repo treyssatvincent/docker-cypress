@@ -1,4 +1,5 @@
-# docker-cypress
+# docker-cypress ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/ninobysa/cypress?style=flat-square)
+
 Docker image ready for [Cypress](https://www.cypress.io/).
 
 Cypress is heavy, so is this image.
@@ -23,7 +24,7 @@ To keep this image as light as possible the fonts to support emoji and Chinese h
 
 If you need emoji:
 ``` Dockerfile
-FROM ninobysa/cypress:10.6.0
+FROM ninobysa/cypress:10.8.0
 
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
@@ -35,7 +36,7 @@ RUN apt-get update && \
 
 If you need chinese:
 ``` Dockerfile
-FROM ninobysa/cypress:10.6.0
+FROM ninobysa/cypress:10.8.0
 
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
