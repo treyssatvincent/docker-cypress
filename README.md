@@ -1,4 +1,4 @@
-# docker-cypress ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/ninobysa/cypress?style=flat-square)
+# docker-cypress [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/ninobysa/cypress?style=flat-square)](https://hub.docker.com/r/ninobysa/cypress/tags)
 
 Docker image ready for [Cypress](https://www.cypress.io/).
 
