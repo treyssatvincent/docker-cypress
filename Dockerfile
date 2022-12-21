@@ -1,6 +1,7 @@
 FROM node:18.12-buster-slim
 
 ARG CYPRESS_VERSION
+ARG CI_XBUILD
 
 ENV TERM=xterm
 ENV npm_config_loglevel=warn
@@ -22,7 +23,8 @@ RUN apt-get update && \
   xauth \
   xvfb \
   && npm i -g cypress@$CYPRESS_VERSION \
-  && cypress verify \
+  && (node -p "process.env.CI_XBUILD && process.arch === 'arm64' ? 'Skipping cypress verify on arm64 due to SIGSEGV.' : process.exit(1)" \
+    || (cypress verify)) \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get clean \
   && npm cache clean --force

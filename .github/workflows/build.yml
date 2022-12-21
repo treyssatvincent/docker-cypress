@@ -33,12 +33,13 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          load: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ env.IMAGE_NAME }}:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             CYPRESS_VERSION=${{ github.event.inputs.version }}
+            CI_XBUILD=1
       -
         name: Test ${{ github.event.inputs.version }}
         run: |
@@ -50,11 +51,12 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}
+            ${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}-test-multi-arch
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             CYPRESS_VERSION=${{ github.event.inputs.version }}
+            CI_XBUILD=1
