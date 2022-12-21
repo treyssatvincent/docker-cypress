@@ -29,11 +29,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and cache ${{ github.event.inputs.version }}
+        name: Build and load ${{ github.event.inputs.version }} for linux/amd64
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
+          load: true
           tags: ${{ env.IMAGE_NAME }}:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -47,7 +48,7 @@ jobs:
           docker run --rm --name static -v $(pwd)/test:/usr/share/nginx/html:ro -d nginx:stable-alpine
           docker run --rm -v $(pwd)/test:/test -w /test --network=container:static ${{ env.IMAGE_NAME }}:test
       -
-        name: Push ${{ github.event.inputs.version }}
+        name: Build for linux/arm64 & push ${{ github.event.inputs.version }} for both
         uses: docker/build-push-action@v3
         with:
           context: .
