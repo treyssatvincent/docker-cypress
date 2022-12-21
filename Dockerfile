@@ -1,4 +1,4 @@
-FROM node:16-buster-slim
+FROM node:18.12-buster-slim
 
 ARG CYPRESS_VERSION
 
