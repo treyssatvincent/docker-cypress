@@ -55,7 +55,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}-test-multi-arch
+            ${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}
+            ${{ env.IMAGE_NAME }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
