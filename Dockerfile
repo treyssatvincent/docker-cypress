@@ -29,4 +29,6 @@ RUN apt-get update && \
   && apt-get clean \
   && npm cache clean --force
 
-ENTRYPOINT ["cypress", "run"]
+COPY entrypoint.sh .
+
+ENTRYPOINT ["/entrypoint.sh"]
