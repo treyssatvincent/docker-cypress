@@ -44,7 +44,6 @@ jobs:
       -
         name: Test ${{ github.event.inputs.version }}
         run: |
-          docker run --rm ${{ env.IMAGE_NAME }}:test version 
           docker run --rm --name static -v $(pwd)/test:/usr/share/nginx/html:ro -d nginx:stable-alpine
           docker run --rm -v $(pwd)/test:/test -w /test --network=container:static ${{ env.IMAGE_NAME }}:test
       -

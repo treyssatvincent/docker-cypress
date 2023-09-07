@@ -1,4 +1,4 @@
-FROM node:18.12-buster-slim
+FROM node:18-buster-slim
 
 ARG CYPRESS_VERSION
 ARG CI_XBUILD
@@ -29,6 +29,4 @@ RUN apt-get update && \
   && apt-get clean \
   && npm cache clean --force
 
-COPY entrypoint.sh .
-
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT cypress run
